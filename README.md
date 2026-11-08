@@ -75,6 +75,30 @@ The disadvantages are:
 
 **Changelog**: See [CHANGELOG.md](CHANGELOG.md)
 
+# Fork
+
+## Fork reason
+
+* Fixing Show Stopper bugs founded during [CredsHolder](https://github.com/MuteSpirit/CredsHolder) hardware credential manager project development.
+
+## Fork maintain
+
+* :exclamation: Do not add changes/commits into `develop` branch
+  * Reason: it's simple way to split origin and fork commits and avoid conflicts on receiving new updates.
+* :exclamation: Main branch for modifications is `fork_creds_holder` now
+
+To get updates from upstream project:
+* Add upstream project as git remote `upstream`
+* Switch to `develop` branch
+* Pull last changes from remote `upstream`
+  * That will happen without any conflicts and branch history changes.
+* Switch to `fork_creds_holder` branch
+* Merge `develop` branch into `fork_creds_holder` one
+  * Reason 1: Rebase of conflicting changes will force to resolve all of them on each such update. It's ugly.
+  * Reason 2: Merge commits will explicitly show time points of bump "VeraCrypt base code"
+* Push into fork repository
+* Rebase all active branches checked out from `fork_creds_holder` one
+
 ## Table of Contents
 
 * [Installation](#Installation)
