@@ -143,15 +143,24 @@ endif
 CXXFLAGS += $(EXTRA_CXXFLAGS)
 CFLAGS += $(EXTRA_CFLAGS)
 
+# Add the header files for the Core files.
+# Do that before EXTRA_CPPFLAGS concatenation.
+# It'll allow to avoid next error case:
+# - both EpoxyDuino and some <OtherProject> have file with the same name, e.g. Steam.h
+# - <OtherProject> makefile add "-I" option with own path into EXTRA_CPPFLAGS
+# - if CPPFLAGS concatenates EXTRA_CPPFLAGS before "-I$(EPOXY_CORE_PATH)" then
+#   include statement in Arduino.h will take file from <OtherProject> instead of EpoxyDuino,
+#   e.g. "<OtherProject>/src/Steam.h" instead of "EpoxyDuino/cores/epoxy/Steam.h"
+CPPFLAGS += -I$(EPOXY_CORE_PATH)
+#
 # Pre-processor flags (-I, -D, etc), mostly for header files.
 CPPFLAGS += $(EXTRA_CPPFLAGS)
+#
 # Define a macro to indicate that EpoxyDuino is being used. Defined here
 # instead of Arduino.h so that files like 'compat.h' can determine the
 # compile-time environment without having to include <Arduino.h>.
 # Also define UNIX_HOST_DUINO for backwards compatibility.
 CPPFLAGS += -D ARDUINO=100 -D UNIX_HOST_DUINO -D EPOXY_DUINO -D $(EPOXY_CORE)
-# Add the header files for the Core files.
-CPPFLAGS += -I$(EPOXY_CORE_PATH)
 # Add the header files for libraries. Old Arduino libraries (v1.0) place the
 # header and source files right at the top, or in a subdirectory named
 # 'utility'. New Arduino libraries (v1.5) place all their files recursively
